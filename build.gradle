@@ -23,6 +23,7 @@ dependencies {
 	compile("com.zaxxer:HikariCP:2.6.1")
 	compile ("com.oracle:ojdbc8:12.1.0.2@jar")
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	compile ("org.springframework.boot:spring-boot-starter-security")
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
