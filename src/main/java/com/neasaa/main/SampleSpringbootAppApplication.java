@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan (basePackages = {"com.neasaa.controller", "com.neasaa.security", "com.neasaa.app"})
+@ComponentScan (basePackages = {"com.neasaa.controller", "com.neasaa.app"})
 @SpringBootApplication
 public class SampleSpringbootAppApplication {
 

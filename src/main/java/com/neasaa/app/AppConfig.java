@@ -19,6 +19,7 @@ package com.neasaa.app;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,14 +27,34 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.neasaa.app.service.SampleService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.neasaa.app.operation")
-@PropertySource("classpath:db.config")
+@ComponentScan(basePackages = {"com.neasaa.app.operation", "${scan.security.package}"})
+//Pass main config name from command line like --main.config=myApp.config 
+// As we are looking up the property from classpath file myApp.config should exists in classpath.
+@PropertySource("classpath:${main.config}")
+@PropertySource(value= "file:${ssl.file.path}", ignoreResourceNotFound = true)
 public class AppConfig {
 
+	//Sample where bean class is base on config name.
+	//Read class name from config.
+	@Value("${app.serviceClass}")
+    private String serviceClassName;
+
+	//Create bean base on config class name
+    @Bean (name="dummyService")
+    public SampleService myService()
+    {
+         try {
+			return Class.forName(serviceClassName).asSubclass(SampleService.class).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to create instance of class " + serviceClassName, e);
+		}
+    }
+    
 	@Bean (name = "springUtil")
 	public SpringUtil SpringUtil () {
 		return new SpringUtil();
